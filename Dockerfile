@@ -1,7 +1,7 @@
 # syntax=docker/dockerfile:1.6
 
-ARG BUILDER_BASE=rust:bullseye
-ARG RUNTIME_BASE=debian:bullseye
+ARG BUILDER_BASE=rust:bookworm
+ARG RUNTIME_BASE=debian:bookworm
 
 FROM --platform=${TARGETPLATFORM} ${BUILDER_BASE} AS builder
 
