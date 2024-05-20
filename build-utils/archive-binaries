@@ -25,7 +25,7 @@ cd "$(dirname "${BASH_SOURCE[0]}")/../.."
 
 BINARIES=()
 
-for BINARY in $(build-utils/list-bin-tragets); do
+for BINARY in $(build-utils/list-bin-targets); do
   BINARIES+=("$BINARY")
 done
 
