@@ -11,3 +11,6 @@ rustflags = [
   "-Aclippy::cargo-common-metadata",
   "-Aclippy::derive-partial-eq-without-eq",
 ]
+
+[build]
+rustdocflags = ["--document-private-items"]
