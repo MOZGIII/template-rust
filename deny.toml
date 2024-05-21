@@ -1,4 +1,7 @@
 [licenses]
-allow = ["GPL-2.0"]
+allow = []
 copyleft = "warn"
 allow-osi-fsf-free = "both"
+
+[licenses.private]
+ignore = true
