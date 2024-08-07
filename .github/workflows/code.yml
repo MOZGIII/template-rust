@@ -122,6 +122,8 @@ jobs:
       - uses: ./.github/actions/common-setup
         with:
           requiresRust: ${{ matrix.util.requiresRust }}
+          modeCacheKey: ${{ matrix.plan.mode.cargoCacheKey }}
+          buildEnvScript: ${{ matrix.plan.platform.buildEnvScript }}
         timeout-minutes: 10
 
       - name: Download ${{ matrix.util.name }}
