@@ -10,6 +10,10 @@ RUN apt-get update \
   clang \
   && rm -rf /var/lib/apt/lists/*
 
+RUN mkdir -p ~/.ssh \
+  && chmod 0600 ~/.ssh \
+  && ssh-keyscan github.com >>~/.ssh/known_hosts
+
 FROM --platform=${TARGETPLATFORM} ${RUNTIME_BASE} AS runtime
 
 RUN apt-get update \
@@ -29,6 +33,7 @@ RUN \
   --mount=type=cache,target=/usr/local/rustup,id=${TARGETPLATFORM} \
   --mount=type=cache,target=/usr/local/cargo/registry,id=${TARGETPLATFORM} \
   --mount=type=cache,target=target,id=${TARGETPLATFORM} \
+  --mount=type=ssh \
   RUST_BACKTRACE=1 \
   cargo build --release --workspace
 
