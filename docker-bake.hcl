@@ -2,9 +2,12 @@ group "default" {
   targets = ["main"]
 }
 
-target "main" {
-  inherits = ["docker-metadata-action-main"]
+target "base" {
   dockerfile = "Dockerfile"
+}
+
+target "main" {
+  inherits = ["base", "docker-metadata-action-main"]
   target = "main"
 }
 
