@@ -59,7 +59,7 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Build and push
-        uses: docker/bake-action@master
+        uses: docker/bake-action@v5
         with:
           files: |
             ./docker-bake.hcl
