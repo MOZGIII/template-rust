@@ -16,7 +16,7 @@ allow = [
 [[licenses.exceptions]]
 name = "unicode-ident"
 version = "*"
-allow = ["Unicode-DFS-2016"]
+allow = ["Unicode-3.0"]
 
 [[licenses.clarify]]
 name = "ring"
