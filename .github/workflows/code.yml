@@ -23,7 +23,7 @@ env:
 jobs:
   plan:
     name: Plan the execution
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     outputs:
       matrix: ${{ steps.set-matrix.outputs.matrix }}
     permissions:
@@ -110,7 +110,7 @@ jobs:
 
       fail-fast: false
     name: ${{ matrix.util.name }}
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     timeout-minutes: 20
     permissions:
       contents: read
