@@ -85,7 +85,7 @@ jobs:
 
           - name: taplo
             download: >
-              curl -sSL "https://github.com/tamasfe/taplo/releases/download/0.8.1/taplo-linux-x86_64.gz" |
+              curl -sSL "https://github.com/tamasfe/taplo/releases/download/0.9.3/taplo-linux-x86_64.gz" |
                 zcat > /usr/local/bin/taplo \
               && chmod +x /usr/local/bin/taplo
             run: taplo format --check
