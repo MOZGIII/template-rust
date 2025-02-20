@@ -4,6 +4,7 @@ group "default" {
 
 target "base" {
   dockerfile = "Dockerfile"
+  ssh = "default"
 }
 
 target "main" {
