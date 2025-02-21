@@ -11,12 +11,8 @@ allow = [
   "MPL-2.0",
   "OpenSSL",
   "Unlicense",
+  "Unicode-3.0",
 ]
-
-[[licenses.exceptions]]
-name = "unicode-ident"
-version = "*"
-allow = ["Unicode-3.0"]
 
 [[licenses.clarify]]
 name = "ring"
