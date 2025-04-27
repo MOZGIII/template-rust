@@ -10,32 +10,32 @@ export type Modes = Record<string, Mode>;
 
 export const code = {
   clippy: {
-    name: "clippy",
+    name: "cargo clippy",
     cargoCommand: "clippy",
     cargoArgs: "--locked --workspace --all-targets -- -D warnings",
     cargoCacheKey: "clippy",
   },
   test: {
-    name: "test",
+    name: "cargo test",
     cargoCommand: "test",
     cargoArgs: "--locked --workspace",
     cargoCacheKey: "test",
   },
   build: {
-    name: "build",
+    name: "cargo build",
     cargoCommand: "build",
     cargoArgs: "--locked --workspace",
     cargoCacheKey: "build",
   },
   fmt: {
-    name: "fmt",
+    name: "cargo fmt",
     cargoCommand: "fmt",
     cargoArgs: "-- --check",
     platformIndependent: true,
     cargoCacheKey: "code",
   },
   docs: {
-    name: "doc",
+    name: "cargo doc",
     cargoCommand: "doc",
     cargoArgs: "--locked --workspace --document-private-items",
     platformIndependent: true,
@@ -45,7 +45,7 @@ export const code = {
 
 export const build = {
   build: {
-    name: "build",
+    name: "cargo build",
     cargoCommand: "build",
     cargoArgs: "--locked --workspace --release",
     cargoCacheKey: "release-build",
