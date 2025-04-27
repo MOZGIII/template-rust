@@ -67,10 +67,7 @@ jobs:
         timeout-minutes: 10
 
       - name: Run cargo ${{ matrix.plan.mode.cargoCommand }}
-        uses: actions-rs/cargo@v1
-        with:
-          command: ${{ matrix.plan.mode.cargoCommand }}
-          args: ${{ matrix.plan.mode.cargoArgs }}
+        run: cargo ${{ matrix.plan.mode.cargoCommand }} ${{ matrix.plan.mode.cargoArgs }}
 
   downloadable-utils:
     strategy:
@@ -122,8 +119,6 @@ jobs:
       - uses: ./.github/actions/common-setup
         with:
           requiresRust: ${{ matrix.util.requiresRust }}
-          modeCacheKey: ${{ matrix.plan.mode.cargoCacheKey }}
-          buildEnvScript: ${{ matrix.plan.platform.buildEnvScript }}
         timeout-minutes: 10
 
       - name: Download ${{ matrix.util.name }}
