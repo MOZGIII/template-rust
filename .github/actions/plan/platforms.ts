@@ -31,7 +31,7 @@ export const all = {
     essential: true,
     env: {},
     cacheKey: "ubuntu2404-amd64",
-    artifactMarker: "ubuntu2404",
+    artifactMarker: "ubuntu2404-amd64",
     isBroken: false,
   },
   ubuntu2404_aarch64: {
@@ -41,7 +41,7 @@ export const all = {
     essential: false,
     env: {},
     cacheKey: "ubuntu2404-aarch64",
-    artifactMarker: "ubuntu2404",
+    artifactMarker: "ubuntu2404-aarch64",
     isBroken: false,
   },
   windows_amd64: {
@@ -61,7 +61,7 @@ export const all = {
     essential: false,
     env: {},
     cacheKey: "macos15-amd64",
-    artifactMarker: null,
+    artifactMarker: "amd64",
     isBroken: true, // needs payment, because it's a `-large` runner
   },
   macos15_aarch64: {
@@ -71,7 +71,7 @@ export const all = {
     essential: false,
     env: {},
     cacheKey: "macos15-aarch64",
-    artifactMarker: null,
+    artifactMarker: "aarch64",
     isBroken: false,
   },
 } satisfies Platforms;
