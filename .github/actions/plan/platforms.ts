@@ -31,7 +31,7 @@ export const all = {
     essential: true,
     env: {},
     cacheKey: "ubuntu2404-amd64",
-    artifactMarker: "ubuntu2404-amd64",
+    artifactMarker: "amd64-ubuntu2404",
     isBroken: false,
   },
   ubuntu2404_aarch64: {
@@ -41,7 +41,7 @@ export const all = {
     essential: false,
     env: {},
     cacheKey: "ubuntu2404-aarch64",
-    artifactMarker: "ubuntu2404-aarch64",
+    artifactMarker: "aarch64-ubuntu2404",
     isBroken: false,
   },
   windows_amd64: {
@@ -51,7 +51,7 @@ export const all = {
     essential: false,
     env: {},
     cacheKey: "windows-amd64",
-    artifactMarker: null,
+    artifactMarker: "amd64",
     isBroken: true,
   },
   macos15_amd64: {
