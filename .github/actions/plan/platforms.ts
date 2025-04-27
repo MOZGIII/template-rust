@@ -1,8 +1,9 @@
 export type RunnerOS =
   | "ubuntu-24.04"
-  | "windows-latest"
-  | "macos-14"
-  | "macos-14-large";
+  | "ubuntu-24.04-arm"
+  | "macos-15" // arm
+  | "macos-15-large" // intel
+  | "windows-latest";
 
 export type Platform = {
   name: string;
@@ -23,8 +24,8 @@ const buildEnvScriptPath = (script: string) =>
 
 // All the platforms that we support, and their respective settings.
 export const all = {
-  ubuntu2204: {
-    name: "Ubuntu 24.04",
+  ubuntu2404_amd64: {
+    name: "Ubuntu 24.04 (amd64)",
     os: "ubuntu-24.04",
     buildEnvScript: buildEnvScriptPath("ubuntu.sh"),
     essential: true,
@@ -33,8 +34,18 @@ export const all = {
     artifactMarker: "ubuntu2404",
     isBroken: false,
   },
-  windows: {
-    name: "Windows",
+  ubuntu2404_aarch64: {
+    name: "Ubuntu 24.04 (aarch64)",
+    os: "ubuntu-24.04-arm",
+    buildEnvScript: buildEnvScriptPath("ubuntu.sh"),
+    essential: false,
+    env: {},
+    cacheKey: "ubuntu2404-aarch64",
+    artifactMarker: "ubuntu2404",
+    isBroken: false,
+  },
+  windows_amd64: {
+    name: "Windows (amd64)",
     os: "windows-latest",
     buildEnvScript: buildEnvScriptPath("windows.sh"),
     essential: false,
@@ -43,27 +54,27 @@ export const all = {
     artifactMarker: null,
     isBroken: true,
   },
-  macos14amd64: {
-    name: "macOS 14 (amd64)",
-    os: "macos-14-large",
+  macos15_amd64: {
+    name: "macOS 15 (amd64)",
+    os: "macos-15-large",
     buildEnvScript: buildEnvScriptPath("macos.sh"),
     essential: false,
     env: {},
-    cacheKey: "macos-14-amd64",
+    cacheKey: "macos15-amd64",
     artifactMarker: null,
-    isBroken: true,
+    isBroken: false,
   },
-  macos14aarch64: {
-    name: "macOS 14 (aarch64)",
-    os: "macos-14",
+  macos15_aarch64: {
+    name: "macOS 15 (aarch64)",
+    os: "macos-15",
     buildEnvScript: buildEnvScriptPath("macos.sh"),
     essential: false,
     env: {},
-    cacheKey: "macos-14-aarch64",
+    cacheKey: "macos15-aarch64",
     artifactMarker: null,
     isBroken: false,
   },
 } satisfies Platforms;
 
 // A platform for running things that are platform-independent.
-export const core = all.ubuntu2204 satisfies Platform;
+export const core = all.ubuntu2404_amd64 satisfies Platform;
