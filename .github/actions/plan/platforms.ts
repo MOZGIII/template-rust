@@ -62,7 +62,7 @@ export const all = {
     env: {},
     cacheKey: "macos15-amd64",
     artifactMarker: null,
-    isBroken: false,
+    isBroken: true, // needs payment, because it's a `-large` runner
   },
   macos15_aarch64: {
     name: "macOS 15 (aarch64)",
