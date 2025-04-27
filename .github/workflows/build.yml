@@ -8,13 +8,13 @@ on:
     - cron: "0 20 * * 0"
   workflow_dispatch:
 
-defaults:
-  run:
-    shell: bash
-
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref || github.run_id }}
   cancel-in-progress: ${{ github.ref != 'refs/heads/master' && github.event_name != 'merge_group' }}
+
+defaults:
+  run:
+    shell: bash
 
 jobs:
   draft-release:
@@ -85,12 +85,7 @@ jobs:
         timeout-minutes: 10
 
       - name: Run cargo ${{ matrix.plan.mode.cargoCommand }}
-        uses: actions-rs/cargo@v1
-        with:
-          command: ${{ matrix.plan.mode.cargoCommand }}
-          args: >
-            ${{ matrix.plan.mode.cargoArgs }}
-            ${{ matrix.plan.platform.buildTarget && format('--target {0}', matrix.plan.platform.buildTarget) || '' }}
+        run: cargo ${{ matrix.plan.mode.cargoCommand }} ${{ matrix.plan.mode.cargoArgs }}
 
       - name: Archive the binaries for release
         env:
