@@ -1,17 +1,5 @@
-name: code
-
 on:
-  push:
-    branches:
-      - "**"
-      - "!gh-readonly-queue/**"
-  merge_group:
-  schedule:
-    - cron: "0 20 * * 0"
-
-concurrency:
-  group: ${{ github.workflow }}-${{ github.ref || github.run_id }}
-  cancel-in-progress: ${{ github.ref != 'refs/heads/master' && github.event_name != 'merge_group' }}
+  workflow_call:
 
 defaults:
   run:
@@ -43,18 +31,14 @@ jobs:
     strategy:
       matrix: ${{ fromJson(needs.plan.outputs.matrix) }}
       fail-fast: false
-    name: ${{ matrix.plan.mode.platformIndependent == true && matrix.plan.mode.name || format('{0} / {1}', matrix.plan.platform.name, matrix.plan.mode.name) }}
+    name: |-
+      ${{ matrix.plan.mode.platformIndependent == true && matrix.plan.mode.name || format('{0} :: {1}', matrix.plan.platform.name, matrix.plan.mode.name) }}
     runs-on: ${{ matrix.plan.platform.os }}
     env: ${{ matrix.plan.platform.env }}
     timeout-minutes: 50
     permissions:
       contents: read
     steps:
-      - name: Job config
-        run: printf "%s\n" "$MATRIX_CONTEXT"
-        env:
-          MATRIX_CONTEXT: ${{ toJson(matrix) }}
-
       - name: Checkout
         uses: actions/checkout@v4
         timeout-minutes: 5
