@@ -1,5 +1,10 @@
+variable "TARGETS" {
+  type = list(string)
+  default = ["main"]
+}
+
 group "default" {
-  targets = ["main"]
+  targets = TARGETS
 }
 
 target "base" {
@@ -8,10 +13,19 @@ target "base" {
 }
 
 target "main" {
-  inherits = ["base", "docker-metadata-action-main"]
-  target = "main"
+  matrix = {
+    tgt = TARGETS
+  }
+  name = tgt
+  inherits = ["base", "docker-metadata-action-${tgt}"]
+  target = tgt
 }
 
 # Targets to allow injecting customizations from Github Actions.
 
-target "docker-metadata-action-main" {}
+target "docker-metadata-action" {
+  matrix = {
+    tgt = TARGETS
+  }
+  name = "docker-metadata-action-${tgt}"
+}
