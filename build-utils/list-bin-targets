@@ -2,7 +2,7 @@
 set -euo pipefail
 
 cargo metadata --format-version 1 |
-  jq -r '
+  jq -br '
     .workspace_members as $ws |
     .packages[] | select(.id as $id | $ws | contains([$id])) |
     .targets[] | select(.kind == ["bin"]) |
