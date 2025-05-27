@@ -89,12 +89,10 @@ jobs:
 
       - name: Archive the binaries for release
         env:
-          TARGET_DIR: ${{ matrix.plan.platform.buildTargetDir && format('{0}/release', matrix.plan.platform.buildTargetDir) || 'release' }}
-        run: |
-          ./build-utils/archive-binaries \
-            target/build-archives \
-            "target/$TARGET_DIR" \
-            ""
+          BUILD_TARGET_DIR: "target/${{ matrix.plan.platform.buildTargetDir && format('{0}/release', matrix.plan.platform.buildTargetDir) || 'release' }}"
+          DEST_DIR: "target/build-archives"
+          ARCTIFACT_PREFIX: ""
+        run: ./build-utils/archive-binaries
 
       - name: Compute artifact name
         env:
@@ -115,7 +113,6 @@ jobs:
         with:
           upload_url: ${{ needs.draft-release.outputs.upload-url }}
           asset_path: target/build-archives/archives/*.tar.gz
-          asset_name: ${{ env.ARTIFACT_NAME }}
 
   publish-release:
     needs:

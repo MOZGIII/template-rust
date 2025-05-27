@@ -1,9 +1,9 @@
 #!/bin/bash
 set -euo pipefail
 
-DEST_DIR="$1"
-BUILD_TARGET_DIR="$2"
-ARCTIFACT_PREFIX="$3"
+DEST_DIR="${DEST_DIR?}"
+BUILD_TARGET_DIR="${BUILD_TARGET_DIR?}"
+ARCTIFACT_PREFIX="${ARCTIFACT_PREFIX:-""}"
 
 BUILD_ARCH="${BUILD_ARCH:-"$(rustc -vV | sed -n 's|host: ||p')"}"
 
@@ -25,9 +25,9 @@ cd "$(dirname "${BASH_SOURCE[0]}")/.."
 
 BINARIES=()
 
-for BINARY in $(build-utils/list-bin-targets); do
+while read -r BINARY; do
   BINARIES+=("$BINARY")
-done
+done < <(build-utils/list-bin-targets)
 
 mkdir -p "$DEST_DIR"
 
