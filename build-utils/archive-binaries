@@ -25,9 +25,9 @@ cd "$(dirname "${BASH_SOURCE[0]}")/.."
 
 BINARIES=()
 
-for BINARY in $(build-utils/list-bin-targets); do
+while read -r BINARY; do
   BINARIES+=("$BINARY")
-done
+done < <(build-utils/list-bin-targets)
 
 mkdir -p "$DEST_DIR"
 
