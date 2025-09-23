@@ -50,11 +50,6 @@ jobs:
     permissions:
       contents: read
     steps:
-      - name: Job config
-        run: printf "%s\n" "$MATRIX_CONTEXT"
-        env:
-          MATRIX_CONTEXT: ${{ toJson(matrix) }}
-
       - name: Checkout
         uses: actions/checkout@v5
         timeout-minutes: 5
