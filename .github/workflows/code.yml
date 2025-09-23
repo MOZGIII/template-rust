@@ -43,7 +43,8 @@ jobs:
     strategy:
       matrix: ${{ fromJson(needs.plan.outputs.matrix) }}
       fail-fast: false
-    name: ${{ matrix.plan.mode.platformIndependent == true && matrix.plan.mode.name || format('{0} / {1}', matrix.plan.platform.name, matrix.plan.mode.name) }}
+    name: |-
+      ${{ matrix.plan.mode.platformIndependent == true && matrix.plan.mode.name || format('{0} / {1}', matrix.plan.platform.name, matrix.plan.mode.name) }}
     runs-on: ${{ matrix.plan.platform.os }}
     env: ${{ matrix.plan.platform.env }}
     timeout-minutes: 50
