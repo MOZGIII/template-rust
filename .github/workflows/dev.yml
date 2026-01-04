@@ -29,12 +29,6 @@ jobs:
     permissions:
       contents: read
 
-  build:
-    uses: ./.github/workflows/_build.yml
-    secrets: inherit
-    permissions:
-      contents: write
-
   docker:
     uses: ./.github/workflows/_docker.yml
     secrets: inherit
