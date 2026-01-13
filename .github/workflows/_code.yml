@@ -85,7 +85,7 @@ jobs:
 
           - name: typos
             download: >
-              curl -sSL "https://github.com/crate-ci/typos/releases/download/v1.36.2/typos-v1.36.2-x86_64-unknown-linux-musl.tar.gz" |
+              curl -sSL "https://github.com/crate-ci/typos/releases/download/v1.42.0/typos-v1.42.0-x86_64-unknown-linux-musl.tar.gz" |
                 sudo tar -xzvf - -C /usr/local/bin
             run: typos
 
