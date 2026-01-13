@@ -79,7 +79,7 @@ jobs:
 
           - name: cargo shear
             download: >
-              curl -sSL "https://github.com/Boshen/cargo-shear/releases/download/v1.5.2/cargo-shear-x86_64-unknown-linux-gnu.tar.gz" |
+              curl -sSL "https://github.com/Boshen/cargo-shear/releases/download/v1.9.1/cargo-shear-x86_64-unknown-linux-gnu.tar.gz" |
                 sudo tar -xzvf - -C /usr/local/bin
             run: cargo-shear
 
