@@ -59,7 +59,7 @@ jobs:
         env:
           BUILD_TARGET_DIR: "target/${{ matrix.plan.platform.buildTargetDir && format('{0}/release', matrix.plan.platform.buildTargetDir) || 'release' }}"
           DEST_DIR: "target/build-archives"
-          ARCTIFACT_PREFIX: ""
+          ARTIFACT_PREFIX: ""
         run: ./build-utils/archive-binaries
 
       - name: Compute artifact name
