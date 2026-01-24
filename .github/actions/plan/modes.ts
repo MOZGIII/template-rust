@@ -37,7 +37,7 @@ export const code = {
   docs: {
     name: "cargo doc",
     cargoCommand: "doc",
-    cargoArgs: "--locked --workspace --document-private-items",
+    cargoArgs: "--locked --workspace --document-private-items --no-deps",
     platformIndependent: true,
     cargoCacheKey: "doc",
   },
