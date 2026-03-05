@@ -21,7 +21,7 @@ jobs:
 
       - name: Docker meta for main
         id: meta-main
-        uses: docker/metadata-action@v5
+        uses: docker/metadata-action@v6
         with:
           bake-target: docker-metadata-action-main
           images: |
