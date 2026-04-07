@@ -1,9 +1,9 @@
-# syntax=docker/dockerfile:1.6
+# syntax=docker/dockerfile:1.23
 
 ARG BUILDER_BASE=rust:bookworm
 ARG RUNTIME_BASE=debian:bookworm
 
-FROM --platform=${TARGETPLATFORM} ${BUILDER_BASE} AS builder
+FROM ${BUILDER_BASE} AS builder
 
 RUN apt-get update \
   && apt-get install -y \
@@ -14,7 +14,7 @@ RUN mkdir -p ~/.ssh \
   && chmod 0600 ~/.ssh \
   && ssh-keyscan github.com >>~/.ssh/known_hosts
 
-FROM --platform=${TARGETPLATFORM} ${RUNTIME_BASE} AS runtime
+FROM ${RUNTIME_BASE} AS runtime
 
 RUN apt-get update \
   && apt-get install -y \
@@ -23,29 +23,34 @@ RUN apt-get update \
   curl \
   && rm -rf /var/lib/apt/lists/*
 
-FROM --platform=${TARGETPLATFORM} builder AS build
+FROM builder AS build
 
-WORKDIR /build
+WORKDIR /worktree
+
+# Install rust.
+RUN \
+  --mount=type=bind,target=rust-toolchain.toml,source=rust-toolchain.toml \
+  --mount=type=cache,target=/usr/local/rustup \
+  rustup install
 
 # Build the binaries.
 RUN \
   --mount=type=bind,target=.,readwrite \
-  --mount=type=cache,target=/usr/local/rustup,id=${TARGETPLATFORM} \
-  --mount=type=cache,target=/usr/local/cargo/registry,id=${TARGETPLATFORM} \
-  --mount=type=cache,target=target,id=${TARGETPLATFORM} \
+  --mount=type=cache,target=/usr/local/rustup \
+  --mount=type=cache,target=/usr/local/cargo/registry \
+  --mount=type=cache,target=/build \
   --mount=type=ssh \
   RUST_BACKTRACE=1 \
+  CARGO_BUILD_BUILD_DIR=/build \
+  CARGO_TARGET_DIR=/artifacts \
   cargo build --release --workspace
 
-# Copy the binaries out.
-RUN --mount=type=cache,target=target,id=${TARGETPLATFORM} \
-  mkdir -p /artifacts \
-  && cd target/release \
-  && cp -t /artifacts \
-  main \
-  && ls -la /artifacts
+FROM runtime AS runtime-release-artifact
 
-FROM --platform=${TARGETPLATFORM} runtime AS main
-COPY --from=build /artifacts/main /usr/local/bin
-RUN ldd /usr/local/bin/main
+ONBUILD ARG ARTIFACT
+ONBUILD COPY --from=build "/artifacts/release/${ARTIFACT}" /usr/local/bin
+ONBUILD RUN ldd "/usr/local/bin/${ARTIFACT}"
+
+ARG ARTIFACT=main
+FROM runtime-release-artifact AS main
 CMD ["main"]
