@@ -43,7 +43,7 @@ RUN \
   RUST_BACKTRACE=1 \
   CARGO_BUILD_BUILD_DIR=/build \
   CARGO_TARGET_DIR=/artifacts \
-  cargo build --release --workspace
+  cargo build --release --locked --workspace
 
 FROM runtime AS runtime-release-artifact
 
