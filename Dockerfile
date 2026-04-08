@@ -45,12 +45,7 @@ RUN \
   CARGO_TARGET_DIR=/artifacts \
   cargo build --release --locked --workspace
 
-FROM runtime AS runtime-release-artifact
-
-ONBUILD ARG ARTIFACT
-ONBUILD COPY --from=build "/artifacts/release/${ARTIFACT}" /usr/local/bin
-ONBUILD RUN ldd "/usr/local/bin/${ARTIFACT}"
-
-ARG ARTIFACT=main
-FROM runtime-release-artifact AS main
+FROM runtime AS main
+COPY --from=build /artifacts/release/main /usr/local/bin
+RUN ldd /usr/local/bin/main
 CMD ["main"]
