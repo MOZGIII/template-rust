@@ -73,7 +73,7 @@ jobs:
 
           - name: cargo sort
             download: >
-              curl -sSL "https://github.com/DevinR528/cargo-sort/releases/download/v2.0.2/cargo-sort-x86_64-unknown-linux-gnu.tar.gz" |
+              curl -sSL "https://github.com/DevinR528/cargo-sort/releases/download/v1.0.9/cargo-sort-x86_64-unknown-linux-gnu.tar.gz" |
                 sudo tar -xzvf - -C /usr/local/bin
             run: cargo-sort -cwg
 
