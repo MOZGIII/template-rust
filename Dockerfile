@@ -1,7 +1,7 @@
 # syntax=docker/dockerfile:1.23
 
-ARG BUILDER_BASE=rust:bookworm
-ARG RUNTIME_BASE=debian:bookworm
+ARG BUILDER_BASE=rust:trixie
+ARG RUNTIME_BASE=debian:trixie
 
 FROM ${BUILDER_BASE} AS builder
 
