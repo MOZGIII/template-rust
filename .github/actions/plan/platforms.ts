@@ -1,8 +1,8 @@
 export type RunnerOS =
-  | "ubuntu-24.04"
-  | "ubuntu-24.04-arm"
-  | "macos-15" // arm
-  | "macos-15-large" // intel
+  | "ubuntu-26.04"
+  | "ubuntu-26.04-arm"
+  | "macos-26" // arm
+  | "macos-26-large" // intel
   | "windows-latest";
 
 export type Platform = {
@@ -24,24 +24,24 @@ const buildEnvScriptPath = (script: string) =>
 
 // All the platforms that we support, and their respective settings.
 export const all = {
-  ubuntu2404_amd64: {
-    name: "Ubuntu 24.04 (amd64)",
-    os: "ubuntu-24.04",
+  ubuntu2604_amd64: {
+    name: "Ubuntu 26.04 (amd64)",
+    os: "ubuntu-26.04",
     buildEnvScript: buildEnvScriptPath("ubuntu.sh"),
     essential: true,
     env: {},
-    cacheKey: "ubuntu2404-amd64",
-    artifactMarker: "amd64-ubuntu2404",
+    cacheKey: "ubuntu2604-amd64",
+    artifactMarker: "amd64-ubuntu2604",
     isBroken: false,
   },
-  ubuntu2404_aarch64: {
-    name: "Ubuntu 24.04 (aarch64)",
-    os: "ubuntu-24.04-arm",
+  ubuntu2604_aarch64: {
+    name: "Ubuntu 26.04 (aarch64)",
+    os: "ubuntu-26.04-arm",
     buildEnvScript: buildEnvScriptPath("ubuntu.sh"),
     essential: false,
     env: {},
-    cacheKey: "ubuntu2404-aarch64",
-    artifactMarker: "aarch64-ubuntu2404",
+    cacheKey: "ubuntu2604-aarch64",
+    artifactMarker: "aarch64-ubuntu2604",
     isBroken: false,
   },
   windows_amd64: {
@@ -54,27 +54,27 @@ export const all = {
     artifactMarker: "amd64",
     isBroken: true,
   },
-  macos15_amd64: {
-    name: "macOS 15 (amd64)",
-    os: "macos-15-large",
+  macos26_amd64: {
+    name: "macOS 26 (amd64)",
+    os: "macos-26-large",
     buildEnvScript: buildEnvScriptPath("macos.sh"),
     essential: false,
     env: {},
-    cacheKey: "macos15-amd64",
+    cacheKey: "macos26-amd64",
     artifactMarker: "amd64",
     isBroken: true, // needs payment, because it's a `-large` runner
   },
-  macos15_aarch64: {
-    name: "macOS 15 (aarch64)",
-    os: "macos-15",
+  macos26_aarch64: {
+    name: "macOS 26 (aarch64)",
+    os: "macos-26",
     buildEnvScript: buildEnvScriptPath("macos.sh"),
     essential: false,
     env: {},
-    cacheKey: "macos15-aarch64",
+    cacheKey: "macos26-aarch64",
     artifactMarker: "aarch64",
     isBroken: false,
   },
 } satisfies Platforms;
 
 // A platform for running things that are platform-independent.
-export const core = all.ubuntu2404_amd64 satisfies Platform;
+export const core = all.ubuntu2604_amd64 satisfies Platform;
