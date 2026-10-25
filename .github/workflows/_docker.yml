@@ -14,7 +14,32 @@ jobs:
         timeout-minutes: 5
 
       - name: Set up Docker Buildx
+        id: buildx
         uses: docker/setup-buildx-action@v4
+
+      # The Dockerfile keeps the toolchain, the registry and the build dir in
+      # `RUN --mount=type=cache` mounts. Those live in the builder, which is fresh on
+      # every runner, so their contents are saved and restored around the build.
+      # A cache entry is immutable, so every run saves a new one; the restore takes
+      # the newest entry with the closest match, as the lockfile and the toolchain
+      # decide most of what is in there.
+      - name: Cache the build cache mounts
+        uses: actions/cache@v6
+        with:
+          path: cache-mount
+          key: docker-cache-mounts-${{ hashFiles('rust-toolchain.toml', 'Cargo.lock') }}-${{ github.run_id }}
+          restore-keys: |
+            docker-cache-mounts-${{ hashFiles('rust-toolchain.toml', 'Cargo.lock') }}-
+            docker-cache-mounts-
+
+      # Injects the restored contents into the builder's cache mounts, and extracts
+      # them back into `cache-mount` in its post step, before the cache is saved.
+      - name: Inject the cache mounts into the builder
+        uses: reproducible-containers/buildkit-cache-dance@v3
+        with:
+          builder: ${{ steps.buildx.outputs.name }}
+          cache-dir: cache-mount
+          dockerfile: Dockerfile
 
       - name: Docker meta for main
         id: meta-main
