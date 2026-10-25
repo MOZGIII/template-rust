@@ -32,6 +32,27 @@ runs:
       run: rustup show
       if: ${{ inputs.requiresRust == 'true' }}
 
+    - name: Install sccache
+      uses: mozilla-actions/sccache-action@v0.0.11
+      with:
+        version: "v0.19.0"
+      if: ${{ inputs.requiresRust == 'true' }}
+
+    # `rust-cache` restores the dependencies but leaves the workspace crates out, as
+    # they change on every push. Those go through `sccache`, which stores the result
+    # of each `rustc` invocation by content in the Actions cache; the workspace
+    # wrapper keeps it off the dependencies, so nothing is cached twice. `cargo
+    # clippy` replaces the workspace wrapper with its own, so the clippy job runs
+    # without `sccache`. Incremental compilation is off, as `sccache` cannot cache
+    # incremental builds.
+    - name: Enable sccache
+      shell: bash
+      run: |
+        printf "RUSTC_WORKSPACE_WRAPPER=%s\n" "sccache" >>"$GITHUB_ENV"
+        printf "SCCACHE_GHA_ENABLED=%s\n" "on" >>"$GITHUB_ENV"
+        printf "CARGO_INCREMENTAL=%s\n" "0" >>"$GITHUB_ENV"
+      if: ${{ inputs.requiresRust == 'true' }}
+
     - name: Prepare the build environment
       uses: ./.github/actions/env
       with:
