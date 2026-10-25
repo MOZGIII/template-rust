@@ -1,5 +1,10 @@
 [build]
 rustdocflags = ["--document-private-items"]
+fingerprint = "content"                     # goes with `unstable.checksum-freshness`
 
 [net]
 git-fetch-with-cli = true # due to issues at CI
+
+[unstable]
+checksum-freshness = true # build output is reused across fresh checkouts at CI
+rustdoc-depinfo = true    # same, for `cargo doc`
