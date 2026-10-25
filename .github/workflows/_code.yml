@@ -8,6 +8,8 @@ defaults:
 env:
   CARGO_BUILD_WARNINGS: deny
   RUSTDOCFLAGS: "-D warnings"
+  # Nothing at CI reads debug info beyond the file and line in a backtrace.
+  CARGO_PROFILE_DEV_DEBUG: "line-tables-only"
 
 jobs:
   plan:
