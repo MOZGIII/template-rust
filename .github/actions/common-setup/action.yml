@@ -29,7 +29,7 @@ runs:
 
     - name: Install rust toolchain
       shell: bash
-      run: rustup show
+      run: rustup toolchain install
       if: ${{ inputs.requiresRust == 'true' }}
 
     - name: Install sccache
