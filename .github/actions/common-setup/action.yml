@@ -44,12 +44,14 @@ runs:
     # wrapper keeps it off the dependencies, so nothing is cached twice. `cargo
     # clippy` replaces the workspace wrapper with its own, so the clippy job runs
     # without `sccache`. Incremental compilation is off, as `sccache` cannot cache
-    # incremental builds.
+    # incremental builds. Merge queue runs only read: entries written on a merge
+    # queue ref are not visible to any other ref, so they would never be hit.
     - name: Enable sccache
       shell: bash
       run: |
         printf "RUSTC_WORKSPACE_WRAPPER=%s\n" "sccache" >>"$GITHUB_ENV"
         printf "SCCACHE_GHA_ENABLED=%s\n" "on" >>"$GITHUB_ENV"
+        printf "SCCACHE_GHA_RW_MODE=%s\n" "${{ github.event_name == 'merge_group' && 'READ_ONLY' || 'READ_WRITE' }}" >>"$GITHUB_ENV"
         printf "CARGO_INCREMENTAL=%s\n" "0" >>"$GITHUB_ENV"
       if: ${{ inputs.requiresRust == 'true' }}
 
