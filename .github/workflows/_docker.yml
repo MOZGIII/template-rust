@@ -22,7 +22,9 @@ jobs:
       # every runner, so their contents are saved and restored around the build.
       # A cache entry is immutable, so every run saves a new one; the restore takes
       # the newest entry with the closest match, as the lockfile and the toolchain
-      # decide most of what is in there.
+      # decide most of what is in there. Merge queue runs only restore: an entry
+      # saved on a merge queue ref is not visible to any other ref, so it would
+      # never be hit.
       - name: Cache the build cache mounts
         uses: actions/cache@v6
         with:
@@ -31,15 +33,28 @@ jobs:
           restore-keys: |
             docker-cache-mounts-${{ hashFiles('rust-toolchain.toml', 'Cargo.lock') }}-
             docker-cache-mounts-
+        if: ${{ github.event_name != 'merge_group' }}
+
+      - name: Restore the build cache mounts
+        uses: actions/cache/restore@v6
+        with:
+          path: cache-mount
+          key: docker-cache-mounts-${{ hashFiles('rust-toolchain.toml', 'Cargo.lock') }}-${{ github.run_id }}
+          restore-keys: |
+            docker-cache-mounts-${{ hashFiles('rust-toolchain.toml', 'Cargo.lock') }}-
+            docker-cache-mounts-
+        if: ${{ github.event_name == 'merge_group' }}
 
       # Injects the restored contents into the builder's cache mounts, and extracts
       # them back into `cache-mount` in its post step, before the cache is saved.
+      # The extraction is skipped when nothing saves the result.
       - name: Inject the cache mounts into the builder
         uses: reproducible-containers/buildkit-cache-dance@v3
         with:
           builder: ${{ steps.buildx.outputs.name }}
           cache-dir: cache-mount
           dockerfile: Dockerfile
+          skip-extraction: ${{ github.event_name == 'merge_group' }}
 
       - name: Docker meta for main
         id: meta-main
