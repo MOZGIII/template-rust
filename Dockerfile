@@ -30,13 +30,11 @@ WORKDIR /worktree
 # Install rust.
 RUN \
   --mount=type=bind,target=rust-toolchain.toml,source=rust-toolchain.toml \
-  --mount=type=cache,target=/usr/local/rustup \
   rustup install
 
 # Build the binaries.
 RUN \
   --mount=type=bind,target=.,readwrite \
-  --mount=type=cache,target=/usr/local/rustup \
   --mount=type=cache,target=/usr/local/cargo/registry \
   --mount=type=cache,target=/build \
   --mount=type=ssh \

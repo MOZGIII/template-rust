@@ -17,32 +17,31 @@ jobs:
         id: buildx
         uses: docker/setup-buildx-action@v4
 
-      # The Dockerfile keeps the toolchain, the registry and the build dir in
-      # `RUN --mount=type=cache` mounts. Those live in the builder, which is fresh on
-      # every runner, so their contents are saved and restored around the build.
-      # A cache entry is immutable, so every run saves a new one; the restore takes
-      # the newest entry with the closest match, as the lockfile and the toolchain
-      # decide most of what is in there. Merge queue runs only restore: an entry
-      # saved on a merge queue ref is not visible to any other ref, so it would
-      # never be hit.
+      # The Dockerfile keeps the registry and the build dir in `RUN --mount=type=cache`
+      # mounts. Those live in the builder, which is fresh on every runner, so their
+      # contents are saved and restored around the build. A cache entry is
+      # immutable, so every run saves a new one; the restore takes the newest entry
+      # with the closest match, as the lockfile decides most of what is in there.
+      # Merge queue runs only restore: an entry saved on a merge queue ref is not
+      # visible to any other ref, so it would never be hit.
       - name: Cache the build cache mounts
         uses: actions/cache@v6
         with:
           path: cache-mount
-          key: docker-cache-mounts-${{ hashFiles('rust-toolchain.toml', 'Cargo.lock') }}-${{ github.run_id }}
+          key: docker-cargo-mounts-${{ hashFiles('Cargo.lock') }}-${{ github.run_id }}
           restore-keys: |
-            docker-cache-mounts-${{ hashFiles('rust-toolchain.toml', 'Cargo.lock') }}-
-            docker-cache-mounts-
+            docker-cargo-mounts-${{ hashFiles('Cargo.lock') }}-
+            docker-cargo-mounts-
         if: ${{ github.event_name != 'merge_group' }}
 
       - name: Restore the build cache mounts
         uses: actions/cache/restore@v6
         with:
           path: cache-mount
-          key: docker-cache-mounts-${{ hashFiles('rust-toolchain.toml', 'Cargo.lock') }}-${{ github.run_id }}
+          key: docker-cargo-mounts-${{ hashFiles('Cargo.lock') }}-${{ github.run_id }}
           restore-keys: |
-            docker-cache-mounts-${{ hashFiles('rust-toolchain.toml', 'Cargo.lock') }}-
-            docker-cache-mounts-
+            docker-cargo-mounts-${{ hashFiles('Cargo.lock') }}-
+            docker-cargo-mounts-
         if: ${{ github.event_name == 'merge_group' }}
 
       # Injects the restored contents into the builder's cache mounts, and extracts
