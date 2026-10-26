@@ -3,8 +3,14 @@ updates:
   - package-ecosystem: "cargo"
     directory: "/"
     schedule:
-      interval: "daily"
+      interval: "weekly"
+    groups:
+      cargo: # one PR, so one CI run, per week
+        patterns: ["*"]
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
-      interval: "daily"
+      interval: "weekly"
+    groups:
+      github-actions: # same
+        patterns: ["*"]
