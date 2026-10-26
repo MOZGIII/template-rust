@@ -5,6 +5,8 @@ defaults:
   run:
     shell: bash
 
+# These enter cargo's fingerprints, together with what `common-setup` exports:
+# a job that reuses the build dir of another job needs the same values.
 env:
   CARGO_BUILD_WARNINGS: deny
   RUSTDOCFLAGS: "-D warnings"

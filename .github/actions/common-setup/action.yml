@@ -50,6 +50,8 @@ runs:
     # without `sccache`. Incremental compilation is off, as `sccache` cannot cache
     # incremental builds. Merge queue runs only read: entries written on a merge
     # queue ref are not visible to any other ref, so they would never be hit.
+    # The wrapper is part of the metadata hash of the workspace crates: a build
+    # dir made with it is only reusable by a job that sets it the same way.
     - name: Enable sccache
       shell: bash
       run: |
