@@ -6,9 +6,13 @@ inputs:
     required: false
     default: ""
   modeCacheKey:
-    description: "The key for the cache for the mode"
+    description: "The key for the cache for the mode; if empty the caching will be disabled"
     required: false
     default: ""
+  cacheRestoreOnly:
+    description: "Restore the cache but never save it, for a mode whose cache another mode saves"
+    required: false
+    default: "false"
   requiresRust:
     description: "Requires rust to be installed"
     required: false
@@ -23,9 +27,9 @@ runs:
     - name: Cache
       uses: Swatinem/rust-cache@v2
       with:
-        key: ${{ inputs.modeCacheKey == '' && inputs.platformCacheKey || ''}}
-        shared-key: ${{ inputs.modeCacheKey != '' && format('{0}-{1}', inputs.platformCacheKey, inputs.modeCacheKey) || '' }}
-      if: ${{ inputs.platformCacheKey != '' && inputs.requiresRust == 'true' }}
+        shared-key: ${{ format('{0}-{1}', inputs.platformCacheKey, inputs.modeCacheKey) }}
+        save-if: ${{ inputs.cacheRestoreOnly != 'true' }}
+      if: ${{ inputs.platformCacheKey != '' && inputs.modeCacheKey != '' && inputs.requiresRust == 'true' }}
 
     - name: Install rust toolchain
       shell: bash

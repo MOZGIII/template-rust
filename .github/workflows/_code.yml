@@ -50,6 +50,7 @@ jobs:
         with:
           platformCacheKey: ${{ matrix.plan.platform.cacheKey }}
           modeCacheKey: ${{ matrix.plan.mode.cargoCacheKey }}
+          cacheRestoreOnly: ${{ matrix.plan.mode.cargoCacheRestoreOnly == true }}
           buildEnvScript: ${{ matrix.plan.platform.buildEnvScript }}
         timeout-minutes: 10
 
