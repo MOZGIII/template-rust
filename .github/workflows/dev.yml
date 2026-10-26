@@ -20,6 +20,7 @@ defaults:
     shell: bash
 
 env:
+  CARGO_BUILD_WARNINGS: deny
   RUSTDOCFLAGS: "-D warnings"
 
 jobs:

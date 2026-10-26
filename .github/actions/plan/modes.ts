@@ -12,7 +12,7 @@ export const code = {
   clippy: {
     name: "cargo clippy",
     cargoCommand: "clippy",
-    cargoArgs: "--locked --workspace --all-targets -- -D warnings",
+    cargoArgs: "--locked --workspace --all-targets",
     cargoCacheKey: "clippy",
   },
   test: {
