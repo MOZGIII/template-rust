@@ -24,17 +24,27 @@ inputs:
 runs:
   using: "composite"
   steps:
+    # The runner image ships `rustup`, and its proxies install the toolchain named in
+    # `rust-toolchain.toml` on the first `cargo` or `rustc` call. That is off for the
+    # whole job: the toolchain goes in through the explicit install below, and a tool
+    # that quietly depends on `cargo` in a job without Rust fails outright instead of
+    # installing the toolchain behind the flag's back.
+    - name: Disable the rustup toolchain auto-install
+      shell: bash
+      run: printf "RUSTUP_AUTO_INSTALL=%s\n" "0" >>"$GITHUB_ENV"
+
+    - name: Install rust toolchain
+      shell: bash
+      run: rustup toolchain install
+      if: ${{ inputs.requiresRust == 'true' }}
+
+    # Keyed on `rustc -vV`, so it comes after the toolchain install.
     - name: Cache
       uses: Swatinem/rust-cache@c8037a86dde8214a8310e9f54a8fc61ab362aa31 # unreleased fix: the key covers the virtual workspace root `Cargo.toml`
       with:
         shared-key: ${{ format('{0}-{1}', inputs.platformCacheKey, inputs.modeCacheKey) }}
         save-if: ${{ inputs.cacheRestoreOnly != 'true' }}
       if: ${{ inputs.platformCacheKey != '' && inputs.modeCacheKey != '' && inputs.requiresRust == 'true' }}
-
-    - name: Install rust toolchain
-      shell: bash
-      run: rustup toolchain install
-      if: ${{ inputs.requiresRust == 'true' }}
 
     - name: Install sccache
       uses: mozilla-actions/sccache-action@v0.0.11
@@ -72,3 +82,9 @@ runs:
         cargo --version
         cargo clippy --version
         env
+      if: ${{ inputs.requiresRust == 'true' }}
+
+    - name: Print environment info
+      shell: bash
+      run: env
+      if: ${{ inputs.requiresRust != 'true' }}

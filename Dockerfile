@@ -5,6 +5,10 @@ ARG RUNTIME_BASE=debian:trixie
 
 FROM ${BUILDER_BASE} AS builder
 
+# The toolchain goes in through the explicit `rustup install` below; the proxies
+# never install one on their own.
+ENV RUSTUP_AUTO_INSTALL=0
+
 RUN apt-get update \
   && apt-get install -y \
   clang \
